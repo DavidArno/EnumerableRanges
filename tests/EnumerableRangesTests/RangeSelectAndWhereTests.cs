@@ -1,11 +1,10 @@
 ﻿using EnumerableRanges;
 using NUnit.Framework;
-using System.Security.Cryptography.X509Certificates;
 
 namespace EnumerableRangesTests;
 
 [TestFixture]
-internal class RangeSelectAndWhereTests
+public static class RangeSelectAndWhereTests
 {
     [Test]
     public static void Range_CanAcceptASelectAndEnumeratesCorrectly()
@@ -15,9 +14,23 @@ internal class RangeSelectAndWhereTests
     }
 
     [Test]
-    public static void Range_CanAcceptAWhereAndEnumeratesCorrectly()
+    public static void Range_CanAcceptASelectWithIndexAndEnumeratesCorrectly()
+    {
+        var result = string.Join(" ", (3..8).Select((x, i) => x * i));
+        Assert.AreEqual("0 4 10 18 28", result);
+    }
+
+    [Test]
+    public static void Range_CanAcceptWhereAndEnumeratesCorrectly()
     {
         var result = string.Join("", (3..8).Where(x => x % 2 == 0));
         Assert.AreEqual("46", result);
+    }
+
+    [Test]
+    public static void Range_CanAcceptWhereWithIndexAndEnumeratesCorrectly()
+    {
+        var result = string.Join("", (4..^0).Where((x, i) => x == i));
+        Assert.AreEqual("2", result);
     }
 }
